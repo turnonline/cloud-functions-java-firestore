@@ -1,7 +1,10 @@
 package biz.turnonline.ecosystem.skeleton;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.functions.BackgroundFunction;
 import com.google.cloud.functions.Context;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 
 import java.util.Date;
@@ -18,11 +21,23 @@ public class FunctionSkeleton
 {
     private static final Logger LOGGER = Logger.getLogger( FunctionSkeleton.class.getName() );
 
+    private final String DB_DEFAULT_PATH;
+
+    private final Firestore db;
+
     private final Gson gson;
 
     public FunctionSkeleton()
     {
+        this( FirestoreOptions.getDefaultInstance().getService(), FirestoreOptions.getDefaultInstance().getProjectId() );
+    }
+
+    @VisibleForTesting
+    public FunctionSkeleton( Firestore db, String projectId )
+    {
+        this.db = db;
         this.gson = new Gson();
+        DB_DEFAULT_PATH = "projects/" + projectId + "/databases/(default)/documents/";
     }
 
     @Override
@@ -34,6 +49,7 @@ public class FunctionSkeleton
         LOGGER.info( context.resource() );
         LOGGER.info( context.timestamp() );
         LOGGER.info( "Function triggered by change to: " + event );
+        LOGGER.info( "DB_DEFAULT_PATH " + DB_DEFAULT_PATH );
     }
 
     public static class FirestoreEvent
