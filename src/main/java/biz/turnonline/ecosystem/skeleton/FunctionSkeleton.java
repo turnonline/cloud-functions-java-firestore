@@ -6,10 +6,11 @@ import com.google.cloud.functions.BackgroundFunction;
 import com.google.cloud.functions.Context;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.StringJoiner;
-import java.util.logging.Logger;
 
 /**
  * Entry point that listens for Firestore events.
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 public class FunctionSkeleton
         implements BackgroundFunction<FunctionSkeleton.FirestoreEvent>
 {
-    private static final Logger LOGGER = Logger.getLogger( FunctionSkeleton.class.getName() );
+    private static final Logger LOGGER = LoggerFactory.getLogger( FunctionSkeleton.class.getName() );
 
     private final String DB_DEFAULT_PATH;
 
