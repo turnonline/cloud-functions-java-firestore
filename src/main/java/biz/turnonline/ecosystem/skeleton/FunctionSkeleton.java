@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,23 +25,21 @@ public class FunctionSkeleton
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( FunctionSkeleton.class.getName() );
 
-    private final String DB_DEFAULT_PATH;
-
     private final Firestore db;
 
     private final Gson gson;
 
+    @SuppressWarnings( "unused" )
     public FunctionSkeleton()
     {
-        this( FirestoreOptions.getDefaultInstance().getService(), FirestoreOptions.getDefaultInstance().getProjectId() );
+        this( FirestoreOptions.getDefaultInstance().getService() );
     }
 
     @VisibleForTesting
-    public FunctionSkeleton( Firestore db, String projectId )
+    public FunctionSkeleton( Firestore db )
     {
         this.db = db;
         this.gson = new Gson();
-        DB_DEFAULT_PATH = "projects/" + projectId + "/databases/(default)/documents/";
     }
 
     @Override
@@ -49,10 +48,12 @@ public class FunctionSkeleton
         LOGGER.info( context.attributes().toString() );
         LOGGER.info( context.eventId() );
         LOGGER.info( context.eventType() );
-        LOGGER.info( context.resource() );
         LOGGER.info( context.timestamp() );
         LOGGER.info( "Function triggered by change to: " + event );
-        LOGGER.info( "DB_DEFAULT_PATH " + DB_DEFAULT_PATH );
+
+        final String fullDocPath = context.resource();
+        String[] strings = fullDocPath.split( "/" );
+        LOGGER.info( "Doc path fragments " + Arrays.toString( strings ) );
     }
 
     public static class FirestoreEvent
