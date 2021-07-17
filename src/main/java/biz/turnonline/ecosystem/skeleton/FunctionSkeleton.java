@@ -23,7 +23,7 @@ import java.util.StringJoiner;
 public class FunctionSkeleton
         implements BackgroundFunction<FunctionSkeleton.FirestoreEvent>
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger( FunctionSkeleton.class.getName() );
+    private static final Logger LOGGER = LoggerFactory.getLogger( FunctionSkeleton.class );
 
     private final Firestore db;
 
