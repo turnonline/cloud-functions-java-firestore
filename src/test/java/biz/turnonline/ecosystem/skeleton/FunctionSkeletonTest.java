@@ -3,18 +3,21 @@ package biz.turnonline.ecosystem.skeleton;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.functions.Context;
 import com.google.gson.Gson;
-import mockit.Expectations;
-import mockit.Injectable;
-import mockit.Mocked;
-import mockit.Tested;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+
+import static org.mockito.Mockito.when;
 
 /**
  * {@link FunctionSkeleton} unit testing.
@@ -25,6 +28,8 @@ public class FunctionSkeletonTest
 {
     private static final String GOOGLE_CLOUD_PROJECT;
 
+    private AutoCloseable closeable;
+
     static
     {
         // Google Project ID setting to the value taken from firestore-event.json
@@ -33,16 +38,15 @@ public class FunctionSkeletonTest
         System.setProperty( "GOOGLE_CLOUD_PROJECT", GOOGLE_CLOUD_PROJECT );
     }
 
-    @Tested
+    @InjectMocks
     private FunctionSkeleton tested;
 
-    @Injectable
     private final String projectId = GOOGLE_CLOUD_PROJECT;
 
-    @Injectable
+    @Mock( answer = Answers.RETURNS_DEEP_STUBS )
     private Firestore db;
 
-    @Mocked
+    @Mock
     private Context context;
 
     private static FunctionSkeleton.FirestoreEvent readEvent()
@@ -72,25 +76,19 @@ public class FunctionSkeletonTest
     @BeforeEach
     public void before()
     {
-        new Expectations()
-        {
-            {
-                context.attributes();
-                result = new HashMap<>();
+        closeable = MockitoAnnotations.openMocks( this );
 
-                context.eventId();
-                result = "5c196d9d-8e36-8414-3q98-3dfd871e9b42-9";
+        when( context.attributes() ).thenReturn( new HashMap<>() );
+        when( context.eventId() ).thenReturn( "5c196d9d-8e36-8414-3q98-3dfd871e9b42-9" );
+        when( context.eventType() ).thenReturn( "providers/cloud.firestore/eventTypes/document.write" );
+        when( context.resource() ).thenReturn( "projects/test-1abc/databases/(default)/documents/accounts/Uyg...Nfvg/orders/VTb...SN" );
+        when( context.timestamp() ).thenReturn( "2020-12-18T12:44:23.883567Z" );
+    }
 
-                context.eventType();
-                result = "providers/cloud.firestore/eventTypes/document.write";
-
-                context.resource();
-                result = "projects/test-1abc/databases/(default)/documents/accounts/Uyg...Nfvg/orders/VTb...SN";
-
-                context.timestamp();
-                result = "2020-12-18T12:44:23.883567Z";
-            }
-        };
+    @AfterEach
+    public void releaseMocks() throws Exception
+    {
+        closeable.close();
     }
 
     @Test
