@@ -1,6 +1,11 @@
 steps:
-  - name: gcr.io/cloud-builders/mvn
+  - name: 'maven:3-eclipse-temurin-17'
     entrypoint: 'mvn'
     args: [ 'test' ]
   - name: gcr.io/cloud-builders/gcloud
-    args: [ 'functions','deploy','${REPO_NAME}','--region=europe-west1','--source=.' ]
+    args: [ 'functions',
+            'deploy',
+            '${REPO_NAME}',
+            '--runtime=java17',
+            '--region=europe-west1',
+            '--source=.' ]
