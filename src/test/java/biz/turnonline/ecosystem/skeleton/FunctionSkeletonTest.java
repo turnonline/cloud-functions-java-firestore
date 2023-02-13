@@ -33,7 +33,7 @@ public class FunctionSkeletonTest
     static
     {
         // Google Project ID setting to the value taken from firestore-event.json
-        FunctionSkeleton.FirestoreEvent event = readEvent();
+        FirestoreEvent event = readEvent();
         GOOGLE_CLOUD_PROJECT = event.value.name.split( "/" )[1];
         System.setProperty( "GOOGLE_CLOUD_PROJECT", GOOGLE_CLOUD_PROJECT );
     }
@@ -49,10 +49,10 @@ public class FunctionSkeletonTest
     @Mock
     private Context context;
 
-    private static FunctionSkeleton.FirestoreEvent readEvent()
+    private static FirestoreEvent readEvent()
     {
         String json = readString( "firestore-event.json" );
-        return new Gson().fromJson( json, FunctionSkeleton.FirestoreEvent.class );
+        return new Gson().fromJson( json, FirestoreEvent.class );
     }
 
     /**
@@ -95,7 +95,7 @@ public class FunctionSkeletonTest
     public void validInputBody()
     {
         String json = readString( "firestore-event.json" );
-        FunctionSkeleton.FirestoreEvent message = new Gson().fromJson( json, FunctionSkeleton.FirestoreEvent.class );
+        FirestoreEvent message = new Gson().fromJson( json, FirestoreEvent.class );
 
         tested.accept( message, context );
     }
