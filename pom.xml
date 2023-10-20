@@ -43,6 +43,7 @@
 
     <properties>
         <jdk.version>17</jdk.version>
+        <slf4j.version>2.0.9</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -50,7 +51,7 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>libraries-bom</artifactId>
-                <version>26.22.0</version>
+                <version>26.24.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -79,12 +80,18 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.9</version>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.11</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- Unit testing-->
         <dependency>
@@ -121,18 +128,6 @@
                 <version>0.11.0</version>
                 <configuration>
                     <functionTarget>biz.turnonline.ecosystem.skeleton.FunctionSkeleton</functionTarget>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <excludes>
-                        <exclude>.google/</exclude>
-                    </excludes>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
                 </configuration>
             </plugin>
             <plugin>
