@@ -8,4 +8,5 @@ steps:
             '${REPO_NAME}',
             '--runtime=java17',
             '--region=europe-west1',
+            '--docker-registry=artifact-registry',
             '--source=.' ]
