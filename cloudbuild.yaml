@@ -1,12 +1,12 @@
 steps:
-  - name: 'maven:3-eclipse-temurin-17'
+  - name: 'maven:3-eclipse-temurin-21'
     entrypoint: 'mvn'
     args: [ 'test' ]
   - name: gcr.io/cloud-builders/gcloud
     args: [ 'functions',
             'deploy',
             '${REPO_NAME}',
-            '--runtime=java17',
+            '--runtime=java21',
             '--region=europe-west1',
-            '--docker-registry=artifact-registry',
+            '--entry-point=biz.turnonline.ecosystem.skeleton.FunctionSkeleton',
             '--source=.' ]

@@ -42,7 +42,7 @@
     </licenses>
 
     <properties>
-        <jdk.version>17</jdk.version>
+        <jdk.version>21</jdk.version>
         <slf4j.version>2.0.9</slf4j.version>
     </properties>
 
