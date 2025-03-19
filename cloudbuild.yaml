@@ -7,6 +7,12 @@ steps:
             'deploy',
             '${REPO_NAME}',
             '--runtime=java21',
+            '--ingress-settings=internal-only',
+            '--retry',
             '--region=europe-west1',
+            '--trigger-location=eur3',
+            '--trigger-event-filters=type=google.cloud.firestore.document.v1.written',
+            '--trigger-event-filters=database=(default)',
+            '--trigger-event-filters=document=collection/{uid}',
             '--entry-point=biz.turnonline.ecosystem.skeleton.FunctionSkeleton',
             '--source=.' ]
